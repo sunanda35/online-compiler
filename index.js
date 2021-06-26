@@ -22,7 +22,10 @@ app.get("/", (req, res) => {
 
 app.post("/api/compile/", async (req, res, next) => {
   const language = req.body.language;
-  const code = `#include<iostream>
+  if (process.env.NODE_ENV === "production") {
+    const code = req.body.code;
+  } else {
+    const code = `#include<iostream>
 using namespace std;
 
 int main()
@@ -30,6 +33,8 @@ int main()
     cout<<"OOO mother chod";
     return 0;
 }`;
+  }
+
   try {
     fs.writeFileSync("./utils/helo.cpp", code, (err, data) => {
       if (err) console.log(err);
