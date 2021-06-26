@@ -30,36 +30,42 @@ int main()
     cout<<"OOO mother chod";
     return 0;
 }`;
-  fs.writeFileSync("./utils/helo.cpp", code, (err, data) => {
-    if (err) console.log(err);
-    console.log(data);
-  });
-
-  let results, error;
-  var ls = await spawn("g++ ./utils/helo.cpp && ./a.out", { shell: true });
-
-  ls.stdout.on("data", (data) => {
-    results = `${data}`;
-  }); //output of c++ code
-
-  ls.stderr.on("data", (data) => {
-    console.log(`stderr: ${data}`);
-    error = `${data}`;
-  }); //error of code
-  ls.on("error", (error) => {
-    error = `${data}`;
-  }); //error
-
-  // ls.stdin.pipe(res);
-
-  ls.on("close", (close) => {
-    res.status(200).json({
-      language: language,
-      code: code,
-      output: results,
-      err: error,
+  try {
+    fs.writeFileSync("./utils/helo.cpp", code, (err, data) => {
+      if (err) console.log(err);
+      console.log(data);
     });
-  }); //completed code execution
+
+    let results, error;
+    var ls = await spawn("g++ ./utils/helo.cpp && ./a.out", { shell: true });
+
+    ls.stdout.on("data", (data) => {
+      results = `${data}`;
+    }); //output of c++ code
+
+    ls.stderr.on("data", (data) => {
+      console.log(`stderr: ${data}`);
+      error = `${data}`;
+    }); //error of code
+    ls.on("error", (error) => {
+      error = `${data}`;
+    }); //error
+
+    // ls.stdin.pipe(res);
+
+    ls.on("close", (close) => {
+      res.status(200).json({
+        language: language,
+        code: code,
+        output: results,
+        err: error,
+      });
+    }); //completed code execution
+  } catch (err) {
+    res.status(400).json({
+      error: err,
+    });
+  }
 });
 
 app.listen(PORT, () => {
