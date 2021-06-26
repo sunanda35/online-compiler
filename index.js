@@ -6,7 +6,7 @@ const { stdout } = require("process");
 require("dotenv").config(); //for get data from .env file
 
 const app = express();
-const PORT = process.env.PORT_OPEN || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors()); // bypass browser cors error
 app.use(express.json());
