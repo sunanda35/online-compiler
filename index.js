@@ -16,7 +16,7 @@ app.use(
   })
 ); // for all type of api request
 
-app.get("/api/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("It's a compiler backend part.");
 }); //test get api create
 
