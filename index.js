@@ -22,10 +22,11 @@ app.get("/", (req, res) => {
 
 app.post("/api/compile/", async (req, res, next) => {
   const language = req.body.language;
+  var code;
   if (process.env.NODE_ENV === "production") {
-    const code = req.body.code;
+    code = req.body.code;
   } else {
-    const code = `#include<iostream>
+    code = `#include<iostream>
 using namespace std;
 
 int main()
